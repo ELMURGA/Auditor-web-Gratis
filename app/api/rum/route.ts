@@ -18,6 +18,7 @@ export function OPTIONS() { return new NextResponse(null, { headers: cors }); }
 export async function POST(req: NextRequest) {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "local";
   if (!rateLimit("rum:" + ip, 60)) return new NextResponse(null, { status: 429, headers: cors });
+  let events: RumEvent[];
   try {
     const text = await req.text();
     if (text.length > 5000) return new NextResponse(null, { status: 413, headers: cors });
@@ -26,13 +27,18 @@ export async function POST(req: NextRequest) {
     const host = page.hostname.replace(/^www\./, "");
     if (!allowed(host)) return new NextResponse(null, { status: 403, headers: cors });
     const device = b.device === "mobile" || b.device === "tablet" ? b.device : "desktop";
-    const events: RumEvent[] = (Array.isArray(b.metrics) ? b.metrics : []).slice(0, 10)
+    events = (Array.isArray(b.metrics) ? b.metrics : []).slice(0, 10)
       .filter((m: any) => m && LIMITS[m.name] !== undefined && typeof m.value === "number" && m.value >= 0 && m.value <= LIMITS[m.name])
       .map((m: any) => ({ t: Date.now(), host, path: page.pathname.slice(0, 300), device, net: typeof b.net === "string" ? b.net.slice(0, 10) : null, name: m.name, value: m.value }));
+  } catch {
+    return new NextResponse(null, { status: 400, headers: cors }); // petición mal formada
+  }
+  try {
     await saveEvents(events);
     return new NextResponse(null, { status: 204, headers: cors });
-  } catch {
-    return new NextResponse(null, { status: 400, headers: cors });
+  } catch (e) {
+    console.error("rum save", e);
+    return new NextResponse(null, { status: 503, headers: cors }); // almacenamiento no disponible
   }
 }
 
