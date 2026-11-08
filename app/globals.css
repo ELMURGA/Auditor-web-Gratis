@@ -311,15 +311,31 @@ a.site-header__cta:hover, .site-header__nav a.site-header__cta:hover { backgroun
   .report-tabs { top: 104px; }
 }
 @media (max-width: 860px) { .site-header__nav { display: none; } .mobile-only { display: inline-flex; } .site-header { height: 64px; } .site-header__logo img { height: 48px; } .report-tabs { top: 64px; } }
-.site-footer { background: #000; border-top: 1px solid rgba(255,255,255,.1); margin-top: 96px; padding: 48px 24px 32px; }
-.site-footer__in { max-width: 1088px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; }
-.site-footer img { height: 56px; width: auto; display: block; margin-bottom: 12px; }
-.site-footer p { color: #8d8d8d; margin: 0; }
-.site-footer h2 { font-size: 14px; margin: 0 0 12px; }
-.site-footer nav a { display: block; color: #8d8d8d; text-decoration: none; padding: 4px 0; transition: color .2s; }
-.site-footer nav a:hover { color: var(--brand); }
-.site-footer__note { max-width: 1088px; margin: 32px auto 0 !important; font-size: 12px; color: #8d8d8d !important; }
-@media (max-width: 760px) { .site-footer__in { grid-template-columns: 1fr 1fr; } .site-footer__in > :first-child { grid-column: 1 / -1; } }
+/* Pie de página: réplica de <footer> de dazenty.com (bg-black py-12 border-t border-white/10) */
+.dz-footer { background: #000; border-top: 1px solid rgba(255,255,255,.1); padding: 3rem 0; margin-top: 96px; }
+.dz-footer__wrap { max-width: 80rem; margin: 0 auto; padding: 0 1.5rem; }
+.dz-footer__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+.dz-footer__brand { grid-column: span 2; }
+.dz-footer__logo { display: flex; align-items: center; gap: .5rem; margin-bottom: 1rem; }
+.dz-footer__logo img { height: 3.5rem; width: auto; display: block; }
+.dz-footer__tag { color: #6b7280; font-size: .875rem; line-height: 1.25rem; margin: 0 0 1rem; }
+.dz-footer__social { display: flex; gap: 1rem; }
+.dz-footer__social a { color: #9ca3af; transition: color .15s; display: inline-flex; }
+.dz-footer__social a:hover { color: var(--brand); }
+.dz-footer__social svg { width: 1.5rem; height: 1.5rem; }
+.dz-footer__h { font-family: var(--font); font-size: 1rem; line-height: 1.5rem; font-weight: 700; margin: 0 0 1rem; color: #fff; }
+.dz-footer ul { list-style: none; margin: 0; padding: 0; font-size: .875rem; line-height: 1.25rem; }
+.dz-footer li + li { margin-top: .5rem; }
+.dz-footer li a { color: #6b7280; text-decoration: none; transition: color .15s; }
+.dz-footer li a:hover { color: var(--brand); }
+.dz-footer__copy { padding-top: 2rem; border-top: 1px solid rgba(255,255,255,.1); text-align: center; color: #6b7280; font-size: .875rem; line-height: 1.25rem; }
+.dz-footer__copy p { margin: 0; }
+@media (min-width: 768px) { .dz-footer__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } .dz-footer__brand { grid-column: span 1; } }
+.whatsapp-float { position: fixed; bottom: 2rem; right: 2rem; z-index: 50; width: 58px; height: 58px; background: #d97762; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(217,119,98,.45); transition: transform .3s, box-shadow .3s; color: #fff; text-decoration: none; }
+.whatsapp-float:hover { transform: scale(1.12); box-shadow: 0 6px 30px rgba(217,119,98,.65); }
+.whatsapp-float svg { width: 30px; height: 30px; }
+@media (max-width: 600px) { .whatsapp-float { bottom: 1.25rem; right: 1.25rem; width: 52px; height: 52px; } }
+@media print { .whatsapp-float { display: none !important; } .dz-footer { background: #fff; margin-top: 24px; padding: 16px 0 0; } .dz-footer__grid { display: none; } .dz-footer__copy { border-color: #ddd; } }
 
 /* ===================== Informe: acciones, resumen y llamada a la acción ===================== */
 .title-row { align-items: flex-start; }
@@ -351,9 +367,7 @@ a.site-header__cta:hover, .site-header__nav a.site-header__cta:hover { backgroun
   html, body { background: #fff !important; color: #111; font-size: 12px; }
   .site-header { position: static; background: #fff; border: 0; height: auto; margin: 0 0 8px; width: auto; }
   .site-header__logo img { filter: invert(1); height: 44px; }
-  .site-header__nav, .mobile-only, .title-actions, .report-tabs, .cta-actions, .more, .code-head .ghost, .tabs, .site-footer nav, .sticky-rail .label + * img { display: none !important; }
-  .site-footer { margin-top: 24px; background: #fff; border-top: 1px solid #ddd; padding: 16px 0 0; }
-  .site-footer img { filter: invert(1); height: 36px; }
+  .site-header__nav, .mobile-only, .title-actions, .report-tabs, .cta-actions, .more, .code-head .ghost, .tabs, .sticky-rail .label + * img { display: none !important; }
   main { padding: 0; max-width: none; }
   .panel, .device, .strip, .cover { border: 1px solid #e3e3e3; }
   .device, .preview, .cta, .kv li { break-inside: avoid; }

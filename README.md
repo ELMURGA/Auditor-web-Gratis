@@ -78,7 +78,7 @@ Las tres auditorías se lanzan **a la vez** y el informe se va rellenando según
 - **Anti-SSRF.** Es una herramienta que hace peticiones a URLs que escribe el usuario, así que el servidor no puede convertirse en un proxy hacia la red interna. `lib/safe-fetch.ts`: solo `http(s)` en los puertos 80/443, sin credenciales en la URL, resolución DNS y bloqueo de rangos privados, de enlace local, CGNAT y de metadatos de nube (IPv4 e IPv6, incluido `::ffff:`), redirecciones seguidas **a mano** revalidando cada salto, y límites de tiempo y de tamaño de respuesta. Las conexiones TLS y HTTP de bajo nivel validan la IP en el propio `lookup` para evitar DNS rebinding. Cubierto por tests.
 - **Parser de `robots.txt` por grupos**, con la semántica de Google (usa el grupo de `Googlebot` si existe, si no el de `*`; un `Allow` puede reabrir lo que un `Disallow` cierra). La primera versión usaba una expresión regular y daba falsos positivos con webs que bloquean a otros bots; se sustituyó y se cubrió con tests.
 - **Medición de red propia.** DNS, conexión, TLS, TTFB y descarga se miden con los eventos del socket, con una conexión nueva en cada ejecución y la mediana de tres. HTTP/2 se detecta con un handshake TLS/ALPN independiente.
-- **Privacidad por diseño en el RUM.** Sin cookies ni identificadores. Solo se aceptan datos de dominios en una lista de permitidos, con validación de rangos por métrica, límite de tamaño y de peticiones, y la consulta puede protegerse con un token.
+- **Privacidad por diseño en el RUM.** Sin cookies ni identificadores. Solo se aceptan datos de dominios en una lista de permitidos, con validación de rangos por métrica, límite de tamaño y de peticiones. La consulta se protege con un token que solo viaja en cabecera (nunca en la URL). En Supabase, la tabla tiene RLS sin políticas (solo el servidor accede), el percentil 75 se calcula en la propia base de datos con una función SQL y un `pg_cron` borra las mediciones de más de 90 días.
 - **Escena 3D que no estorba.** `three.js` se carga aparte y solo en la portada (el informe no paga su peso), se pinta cuando el navegador está libre, se pausa fuera de pantalla y en pestañas ocultas, respeta `prefers-reduced-motion` y el ahorro de datos, baja la calidad en equipos justos y, si no hay WebGL, queda un dibujo plano. Las notas que orbitan son HTML (texto nítido y accesible) posicionado con la proyección de la cámara.
 - **PDF sin librerías.** Hoja de estilos de impresión que convierte el informe a blanco, despliega las tres pestañas y evita cortes dentro de tarjetas.
 - **Accesibilidad.** Etiquetas en todos los controles, estados con texto (no solo color), foco visible, contraste revisado y diseño sin scroll horizontal desde 375 px.
@@ -146,8 +146,8 @@ Sin clave la app funciona, pero la velocidad cae a los datos de campo de PageSpe
 | `NEXT_PUBLIC_SITE_URL` | Web de la marca a la que enlazan el menú y el pie |
 | `NEXT_PUBLIC_WHATSAPP` | Botón de WhatsApp del informe (vacío = sin botón) |
 | `RUM_ALLOWED_HOSTS` | Dominios que pueden enviar datos de visitantes (obligatorio en producción) |
-| `RUM_DASHBOARD_TOKEN` | Protege la consulta del panel RUM |
-| `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | Persistencia del RUM (crea la tabla con `supabase.sql`) |
+| `RUM_DASHBOARD_TOKEN` | Protege la consulta del panel RUM (cabecera `Authorization: Bearer`) |
+| `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` | Persistencia del RUM (ejecuta `supabase.sql`: tabla, RLS, función y limpieza). Vale la clave `service_role` clásica o una clave secreta nueva |
 
 ### Scripts
 
@@ -173,7 +173,7 @@ Todas bajo la ruta base (`/auditor` por defecto). Límite de peticiones por IP: 
 
 ## Despliegue
 
-Pensada para servirse bajo `/auditor` de un dominio existente. En Vercel, se despliega como proyecto aparte y se enlaza con una redirección interna en la web principal:
+Pensada para servirse bajo `/auditor` de un dominio existente. En Vercel se despliega como proyecto aparte (cada `push` a `main` publica) y la web principal la sirve con una redirección interna (*rewrite*), de modo que el visitante nunca sale del dominio:
 
 ```json
 { "source": "/auditor", "destination": "https://TU-PROYECTO.vercel.app/auditor" },

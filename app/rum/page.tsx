@@ -16,6 +16,7 @@ export default function Rum() {
   const [d, setD] = useState<Data | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [token, setToken] = useState("");
   useEffect(() => setOrigin(location.origin), []);
 
   async function load(e: React.FormEvent) {
@@ -23,7 +24,7 @@ export default function Rum() {
     if (!site.trim()) return;
     setErr(null); setD(null); setBusy(true);
     try {
-      const res = await fetch(path(`/api/rum?site=${encodeURIComponent(site.trim())}`));
+      const res = await fetch(path(`/api/rum?site=${encodeURIComponent(site.trim())}`), { headers: token ? { authorization: `Bearer ${token.trim()}` } : {} });
       const j = await res.json();
       if (!res.ok) setErr(j.error); else setD(j);
     } catch { setErr("No se pudieron cargar los datos."); } finally { setBusy(false); }
@@ -48,9 +49,11 @@ export default function Rum() {
             <form onSubmit={load} style={{ display: "grid", gap: 8 }}>
               <label className="sr" htmlFor="site">Dominio</label>
               <input id="site" className="input" value={site} onChange={(e) => setSite(e.target.value)} placeholder="dazenty.com" />
+              <label className="sr" htmlFor="tok">Clave del panel</label>
+              <input id="tok" className="input" type="password" value={token} onChange={(e) => setToken(e.target.value)} placeholder="Clave del panel" autoComplete="off" />
               <button className="btn" disabled={busy}>{busy ? "Cargando…" : "Ver sus visitas"}</button>
             </form>
-            <p className="meta" style={{ margin: "12px 0 0" }}>Últimos 28 días.</p>
+            <p className="meta" style={{ margin: "12px 0 0" }}>Últimos 28 días. La clave solo se guarda en esta pestaña.</p>
           </section>
         </div>
 
