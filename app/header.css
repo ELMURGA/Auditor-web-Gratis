@@ -1,0 +1,258 @@
+/* Cabecera y menú móvil: copia fiel de dazenty.com (css/main.css + css/servicios.css) */
+:root { --sv-accent:#d97762; --sv-field:#121212; --sv-field-2:#1b1b1b; --sv-ease:cubic-bezier(0.16,1,0.3,1); }
+:root { --dz-header-h: 80px; }
+
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    height: var(--dz-header-h);
+    background: rgba(10, 10, 10, 0.75);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.site-header__inner {
+    max-width: 1280px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    padding-left: max(1.5rem, env(safe-area-inset-left, 1.5rem));
+    padding-right: max(1.5rem, env(safe-area-inset-right, 1.5rem));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.site-header__logo {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+.site-header__logo img { height: 60px; width: auto; display: block; }
+
+/* Links — visibles en escritorio, ocultos en móvil */
+.site-header__nav {
+    display: none;
+    align-items: center;
+    gap: 2.25rem;
+}
+.site-header__nav a {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.65);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+}
+.site-header__nav a:hover,
+.site-header__nav a.is-active { color: #ffffff; }
+.site-header__nav a.site-header__cta {
+    color: #000000;
+    background: #d97762;
+    padding: 0.6rem 1.4rem;
+    border-radius: 9999px;
+    font-weight: 600;
+}
+.site-header__nav a.site-header__cta:hover { background: #e08c78; color: #000000; }
+
+/* Botón hamburguesa — solo móvil/tablet */
+.nav-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 0.75rem;
+    cursor: pointer;
+    padding: 0;
+}
+.nav-toggle span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #ffffff;
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.nav-toggle.is-active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.is-active span:nth-child(2) { opacity: 0; }
+.nav-toggle.is-active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Menú móvil — panel a pantalla completa, nunca se recorta */
+.mobile-nav {
+    position: fixed;
+    top: var(--dz-header-h);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 998;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2rem;
+    padding: 2rem 1.5rem;
+    padding-bottom: max(2rem, env(safe-area-inset-bottom, 2rem));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    background: rgba(8, 8, 8, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-12px);
+    transition: opacity 0.35s ease, transform 0.35s ease, visibility 0.35s;
+}
+.mobile-nav.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+.mobile-nav a {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+}
+.mobile-nav a.mobile-nav__cta {
+    color: #000000;
+    background: #d97762;
+    padding: 0.75rem 2rem;
+    border-radius: 9999px;
+}
+/* Centrado vertical que no recorta el primer enlace cuando el contenido no cabe */
+.mobile-nav > :first-child { margin-top: auto; }
+.mobile-nav > :last-child { margin-bottom: auto; }
+
+/* Móvil en horizontal: menos separación para que quepan los enlaces */
+@media (max-height: 480px) {
+    .mobile-nav { gap: 1.1rem; padding-top: 1.25rem; padding-bottom: 1.25rem; }
+    .mobile-nav a { font-size: 1.2rem; }
+}
+
+@media (min-width: 768px) {
+    .site-header__nav { display: flex; }
+    .nav-toggle { display: none; }
+    .mobile-nav { display: none; }
+
+    /* Escritorio: header flotante tipo píldora, separado del borde */
+    .site-header {
+        top: 20px;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        width: calc(100% - 3rem);
+        max-width: 1200px;
+        height: 76px;
+        border-radius: 9999px;
+        background: rgba(12, 12, 12, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.45);
+    }
+    .site-header__inner {
+        padding: 0 2rem;
+    }
+    .site-header__logo img { height: 66px; }
+    .site-header__nav a:not(.site-header__cta) {
+        text-transform: uppercase;
+        font-size: 12.5px;
+        letter-spacing: 0.08em;
+        /* Área táctil cómoda en tablet sin cambiar el aspecto */
+        padding: 0.8rem 0.25rem;
+        margin: 0 -0.25rem;
+    }
+}
+
+/* Bloquear scroll del body mientras el menú móvil está abierto */
+body.nav-open { overflow: hidden; }
+/* Con el menú abierto, nada flotante debe taparlo */
+body.nav-open .cookie-banner,
+body.nav-open .whatsapp-float {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Avoid repainting fixed backdrop filters while scrolling on mobile Safari. */
+.nav-drop { position: relative; display: none; }
+@media (min-width: 768px) { .nav-drop { display: block; } }
+.site-header__nav .nav-drop > a { display: inline-flex; align-items: center; gap: 0.45rem; line-height: 1; }
+.nav-drop > a::after {
+    content: ''; flex: none; width: 5px; height: 5px;
+    border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor;
+    transform: translateY(-2px) rotate(45deg); transition: transform 0.25s var(--sv-ease);
+}
+.nav-drop:hover > a::after, .nav-drop:focus-within > a::after { transform: translateY(1px) rotate(225deg); }
+.nav-drop__panel {
+    position: absolute; top: 100%; left: 50%; width: 22rem; padding-top: 1.4rem;
+    opacity: 0; visibility: hidden; transform: translate(-50%, 6px);
+    transition: opacity 0.2s ease, transform 0.25s var(--sv-ease), visibility 0s linear 0.25s;
+}
+.nav-drop:hover .nav-drop__panel, .nav-drop:focus-within .nav-drop__panel {
+    opacity: 1; visibility: visible; transform: translate(-50%, 0);
+    transition: opacity 0.2s ease, transform 0.25s var(--sv-ease), visibility 0s;
+}
+.nav-drop__box { background: #0e0e0e; border-radius: 1.25rem; padding: 0.6rem; display: grid; }
+.site-header__nav .nav-drop__box a {
+    text-transform: none; letter-spacing: 0; white-space: normal; margin: 0; padding: 0.7rem 1rem;
+    border-radius: 0.8rem; font-size: 15px; color: #fff;
+}
+.site-header__nav .nav-drop__box a:hover, .site-header__nav .nav-drop__box a:focus-visible { background: var(--sv-field-2); color: var(--sv-accent); }
+.site-header__nav .nav-drop__box a.nav-drop__all { color: var(--sv-accent); margin-top: 0.3rem; background: var(--sv-field); }
+
+/* ---------- Menú móvil ---------- */
+.mobile-nav { align-items: stretch; justify-content: flex-start; gap: 0; padding: 0.5rem 1.5rem 0; background: #050505; -webkit-backdrop-filter: none; backdrop-filter: none; overflow-y: auto; overscroll-behavior: contain; }
+.mobile-nav > :first-child, .mobile-nav > :last-child { margin: 0; }
+.mobile-nav a { text-decoration: none; }
+.mobile-nav a:focus-visible { outline: 2px solid var(--sv-accent); outline-offset: 2px; border-radius: 0.4rem; }
+.mnav-main { display: grid; align-content: start; padding-top: 0.5rem; }
+.mobile-nav .mnav-link {
+    display: flex; align-items: center; width: 100%; min-height: 54px; padding: 0.4rem 0;
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(2rem, 9.5vw, 2.6rem); letter-spacing: -0.04em; line-height: 1; color: #fff;
+}
+.mobile-nav .mnav-link:active { color: var(--sv-accent); }
+.mnav-sub { display: grid; grid-template-columns: 1fr; gap: 0; margin: 0 0 0.9rem; padding: 0.2rem 0 0.2rem 1rem; border-radius: 0 0 0 0; background: none; }
+.mobile-nav .mnav-sub a { display: flex; align-items: center; justify-content: space-between; min-height: 42px; padding: 0.25rem 0; font-size: 1.1rem; font-weight: 500; letter-spacing: -0.01em; color: #cfcfcf; }
+.mobile-nav .mnav-sub a::after { content: '\2192'; color: var(--sv-accent); opacity: 0; transform: translateX(-4px); transition: opacity 0.2s, transform 0.2s; }
+.mobile-nav .mnav-sub a:active { color: #fff; }
+.mobile-nav .mnav-sub a:active::after { opacity: 1; transform: none; }
+.mobile-nav > .mnav-foot { position: static; margin-top: auto; padding: 1rem 0 max(1rem, env(safe-area-inset-bottom, 1rem)); display: grid; gap: 0.6rem; background: #050505; }
+.mobile-nav .mnav-contact { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+.mobile-nav .mnav-contact a { display: flex; align-items: center; justify-content: center; min-height: 40px; border-radius: 9999px; background: #141414; font-size: 0.9rem; font-weight: 600; color: #e5e5e5; }
+.mobile-nav .mnav-contact a:active { background: #1f1f1f; color: var(--sv-accent); }
+.mobile-nav a.mobile-nav__cta { display: flex; align-items: center; justify-content: center; min-height: 46px; padding: 0.6rem 1.5rem; border-radius: 9999px; background: var(--sv-accent); color: #000; font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: 0; }
+@media (max-height: 700px) { .mobile-nav .mnav-link { min-height: 48px; font-size: 1.9rem; } .mobile-nav .mnav-sub { margin-bottom: 0.4rem; } .mobile-nav .mnav-sub a { min-height: 38px; font-size: 1.05rem; } .mobile-nav > .mnav-foot { position: static; padding-top: 0.9rem; gap: 0.6rem; } .mobile-nav a.mobile-nav__cta { min-height: 52px; } .mobile-nav .mnav-contact a { min-height: 42px; } }
+.mobile-nav { background: var(--sv-accent); background-color: var(--sv-accent); opacity: 1; transform: none; clip-path: inset(0 0 100% 0); transition: clip-path 0.6s cubic-bezier(0.7, 0, 0.2, 1), visibility 0s linear 0.6s; }
+.mobile-nav.is-open { clip-path: inset(0 0 0 0); transition: clip-path 0.6s cubic-bezier(0.7, 0, 0.2, 1), visibility 0s; }
+.mobile-nav .mnav-link, .mobile-nav .mnav-sub a { color: #000; }
+.mobile-nav .mnav-link:active, .mobile-nav .mnav-sub a:active { color: #fff; }
+.mobile-nav .mnav-sub a::after { color: #000; }
+.mobile-nav > .mnav-foot { background: var(--sv-accent); }
+.mobile-nav a.mobile-nav__cta { background: #000; color: var(--sv-accent); }
+.mobile-nav .mnav-contact a { background: rgba(0, 0, 0, 0.12); color: #000; }
+.mobile-nav .mnav-contact a:active { background: rgba(0, 0, 0, 0.22); color: #000; }
+.mobile-nav a:focus-visible { outline-color: #000; }
+/* Los enlaces suben y aparecen uno tras otro cuando la cortina ya ha caído */
+.mobile-nav .mnav-link, .mobile-nav .mnav-sub a, .mobile-nav .mnav-foot > * { opacity: 0; transform: translateY(22px); transition: opacity 0.25s ease, transform 0.25s ease; }
+.mobile-nav.is-open .mnav-link, .mobile-nav.is-open .mnav-sub a, .mobile-nav.is-open .mnav-foot > * { opacity: 1; transform: none; transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.mobile-nav.is-open .mnav-main > .mnav-link:nth-child(1) { transition-delay: 0.25s; }
+.mobile-nav.is-open .mnav-group > .mnav-link { transition-delay: 0.32s; }
+.mobile-nav.is-open .mnav-sub a:nth-child(1) { transition-delay: 0.38s; } .mobile-nav.is-open .mnav-sub a:nth-child(2) { transition-delay: 0.42s; }
+.mobile-nav.is-open .mnav-sub a:nth-child(3) { transition-delay: 0.46s; } .mobile-nav.is-open .mnav-sub a:nth-child(4) { transition-delay: 0.5s; }
+.mobile-nav.is-open .mnav-sub a:nth-child(5) { transition-delay: 0.54s; } .mobile-nav.is-open .mnav-sub a:nth-child(6) { transition-delay: 0.58s; }
+.mobile-nav.is-open .mnav-main > .mnav-link:nth-child(3) { transition-delay: 0.62s; }
+.mobile-nav.is-open .mnav-foot > :nth-child(1) { transition-delay: 0.66s; } .mobile-nav.is-open .mnav-foot > :nth-child(2) { transition-delay: 0.72s; }
+@media (prefers-reduced-motion: reduce) { .mobile-nav, .mobile-nav.is-open { transition: none; } .mobile-nav .mnav-link, .mobile-nav .mnav-sub a, .mobile-nav .mnav-foot > * { transition: none !important; transform: none; } }

@@ -26,6 +26,7 @@
 }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
+html, body { overflow-x: clip; }
 body { margin: 0; background: var(--ground); color: var(--text); font-family: var(--font); font-size: 14px; line-height: 20px; }
 a { color: inherit; }
 button, input { font: inherit; color: inherit; }
@@ -294,23 +295,11 @@ footer.foot a:hover { color: var(--text); }
 @media (max-width: 640px) { .switch .long { display: none; } .switch .short { display: inline; } .summary .nofield { grid-column: auto; } }
 
 /* ===================== Cabecera y pie de dazenty.com ===================== */
-.site-header { position: sticky; top: 0; z-index: 20; height: 72px; background: rgba(10,10,10,.97); border-bottom: 1px solid rgba(255,255,255,.08); }
-.site-header__inner { max-width: 1280px; height: 100%; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-.site-header__logo { display: flex; align-items: center; }
-.site-header__logo img { height: 56px; width: auto; display: block; }
-.site-header__nav { display: flex; align-items: center; gap: 32px; }
-.site-header__nav a { font-family: var(--figure); font-size: 12.5px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.65); text-decoration: none; white-space: nowrap; transition: color .2s; padding: 12px 0; }
-.site-header__nav a:hover, .site-header__nav a[aria-current="page"] { color: #fff; }
-.site-header__nav a[aria-current="page"] { box-shadow: inset 0 -2px 0 var(--brand); }
-a.site-header__cta, .site-header__nav a.site-header__cta { font-family: var(--figure); color: #000; background: var(--brand); padding: 10px 22px; border-radius: 999px; font-weight: 600; font-size: 14px; letter-spacing: 0; text-transform: none; text-decoration: none; white-space: nowrap; transition: background .2s; }
-a.site-header__cta:hover, .site-header__nav a.site-header__cta:hover { background: var(--primary-hover); color: #000; }
+/* Cabecera: estilos en header.css (copia de dazenty.com). Aquí solo el hueco que ocupa al ser fija. */
+main { padding-top: 104px; }
+.report-tabs { top: 80px; }
+@media (min-width: 768px) { main { padding-top: 132px; } .report-tabs { top: 104px; } }
 .mobile-only { display: none; }
-@media (min-width: 1024px) {
-  .site-header { top: 20px; width: calc(100% - 48px); max-width: 1200px; margin: 20px auto 0; height: 76px; border-radius: 999px; background: rgba(12,12,12,.97); border: 1px solid rgba(255,255,255,.1); }
-  .site-header__inner { padding: 0 20px 0 28px; }
-  .report-tabs { top: 104px; }
-}
-@media (max-width: 860px) { .site-header__nav { display: none; } .mobile-only { display: inline-flex; } .site-header { height: 64px; } .site-header__logo img { height: 48px; } .report-tabs { top: 64px; } }
 /* Pie de página: réplica de <footer> de dazenty.com (bg-black py-12 border-t border-white/10) */
 .dz-footer { background: #000; border-top: 1px solid rgba(255,255,255,.1); padding: 3rem 0; margin-top: 96px; }
 .dz-footer__wrap { max-width: 80rem; margin: 0 auto; padding: 0 1.5rem; }
@@ -365,7 +354,9 @@ a.site-header__cta:hover, .site-header__nav a.site-header__cta:hover { backgroun
     --pos-bg: #dcfae5; --positive: #1a7a45; --warn-bg: #fff3d6; --warning: #8a5a00; --neg-bg: #ffe4e6; --negative: #b4232f; }
   @page { margin: 14mm; }
   html, body { background: #fff !important; color: #111; font-size: 12px; }
-  .site-header { position: static; background: #fff; border: 0; height: auto; margin: 0 0 8px; width: auto; }
+  .mobile-nav, .nav-toggle { display: none !important; }
+  main { padding-top: 0 !important; }
+  .site-header { position: static; transform: none; left: auto; width: auto; max-width: none; box-shadow: none; border-radius: 0; background: #fff; border: 0; height: auto; margin: 0 0 8px; width: auto; }
   .site-header__logo img { filter: invert(1); height: 44px; }
   .site-header__nav, .mobile-only, .title-actions, .report-tabs, .cta-actions, .more, .code-head .ghost, .tabs, .sticky-rail .label + * img { display: none !important; }
   main { padding: 0; max-width: none; }

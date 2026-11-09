@@ -1,3 +1,4 @@
+import "./header.css";
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
