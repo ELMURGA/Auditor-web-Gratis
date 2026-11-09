@@ -7,7 +7,7 @@ import { BASE, SITE } from "@/lib/base";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 const space = Space_Grotesk({ subsets: ["latin"], variable: "--font-space", display: "swap", weight: ["500", "600"] });
 
-const TITLE = "Auditor web gratis · Dazenty";
+const TITLE = "Auditor web gratis | Análisis de velocidad, SEO y redes | Dazenty";
 const DESC = "Audita tu web gratis: cómo la ven Google, LinkedIn, WhatsApp y X, qué velocidad tienen sus visitantes reales en móvil, tablet y ordenador, y qué corregir primero.";
 const URL_PAGE = `${SITE}${BASE}`;
 const OG_IMAGE = `${SITE}/img/og-dazenty.jpg`; // misma imagen social que dazenty.com (1200×630)
